@@ -4406,7 +4406,7 @@ configured to tell them where the shared memory or the memory mapped file is.
 
 This information is transmitted at compile-time and run-time: The allocators
 receive a template parameter defining the type of the segment manager and
-their constructor receive a pointer to the segment manager of the managed memory
+their constructors receive a pointer to the segment manager of the managed memory
 segment where the user wants to allocate the values.
 
 [*Boost.Interprocess] allocators have [*no default-constructors] and containers
@@ -4454,13 +4454,13 @@ segregated storage, a simple pointer swapping is needed to swap an allocator of 
 allocator of Group2. But when the user wants to swap two shared memory allocators, each one
 placed in a different shared memory segment, this is not possible. As generally shared memory
 is mapped in different addresses in each process, a pointer placed in one segment can't point
-to any object placed in other shared memory segment, since in each process, the distance between
+to any object placed in the other shared memory segment, since in each process, the distance between
 the segments is different. However, if both shared memory allocators are in the same segment,
 a non-throwing swap is possible, just like heap allocators.
 
 Until a final resolution is achieved. [*Boost.Interprocess] allocators implement a non-throwing
 swap function that swaps internal pointers. If an allocator placed in a shared memory segment is
-swapped with other placed in a different shared memory segment, the result is undefined. But a
+swapped with another placed in a different shared memory segment, the result is undefined. But a
 crash is quite sure.
 
 [endsect]
@@ -4757,7 +4757,7 @@ An example using [classref boost::interprocess::cached_node_allocator cached_nod
 [section:stl_allocators_adaptive Adaptive pool node allocators]
 
 Node allocators based on simple segregated storage algorithm are both
-space-efficient and fast but they have a problem: they only can grow. Every allocated
+space-efficient and fast but they have a problem: they can only grow. Every allocated
 node avoids any payload to store additional data and that leads to the following limitation:
 when a node is deallocated, it's stored in a free list of nodes but memory is not
 returned to the segment manager so a deallocated
@@ -4903,7 +4903,7 @@ An example using [classref boost::interprocess::private_adaptive_pool private_ad
 
 [section:cached_adaptive_pool cached_adaptive_pool: Avoiding synchronization overhead]
 
-Adaptive pools have also a cached version. In this allocator the allocator caches
+Adaptive pools also have a cached version. In this allocator the allocator caches
 some nodes to avoid the synchronization and bookkeeping overhead of the shared
 adaptive pool.
 [classref boost::interprocess::cached_adaptive_pool cached_adaptive_pool]
@@ -4972,7 +4972,7 @@ An example using [classref boost::interprocess::cached_adaptive_pool cached_adap
 
 [*Boost.Interprocess] STL compatible allocators offer a STL compatible allocator
 interface and if they define their internal *pointer* typedef as a relative pointer,
-they can sbe used to place STL containers in shared memory, memory mapped files or
+they can be used to place STL containers in shared memory, memory mapped files or
 in a user defined memory segment.
 
 However, as Scott Meyers mentions in his Effective STL
@@ -5216,7 +5216,7 @@ Here is an example that shows how to put a multi index container in shared memor
 
 [endsect]
 
-Programmers can place [*Boost.CircularBuffer] containers in sharecd memory provided
+Programmers can place [*Boost.CircularBuffer] containers in shared memory provided
 they disable debugging facilities with defines `BOOST_CB_DISABLE_DEBUG` or the more
 general `NDEBUG`. The reason is that those debugging facilities are only compatible
 with raw pointers.
